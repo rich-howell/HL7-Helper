@@ -17,7 +17,6 @@
     "9": "Assigning Jurisdiction",
     "10": "Assigning Agency or Department"
   },
-
   "XPN": {
     "1": "Family Name",
     "1.1": "Family Name.Surname",
@@ -39,28 +38,22 @@
     "13": "Expiration Date",
     "14": "Professional Suffix"
   },
-
   "TS": {
     "1": "Time",
     "2": "Degree of Precision"
   },
-
   "IS": {
     "1": "Coded Value"
   },
-
   "ID": {
     "1": "Flag (Y/N/…)"
   },
-
   "ST": {
     "1": "String Data"
   },
-
   "NM": {
     "1": "Numeric Value"
   },
-
   "CE": {
     "1": "Identifier",
     "2": "Text",
@@ -69,7 +62,6 @@
     "5": "Alternate Text",
     "6": "Name of Alternate Coding System"
   },
-
   "CWE": {
     "1": "Identifier",
     "2": "Text",
@@ -81,7 +73,6 @@
     "8": "Alternate Coding System Version ID",
     "9": "Original Text"
   },
-
   "XAD": {
     "1": "Street Address",
     "1.1": "Street Address.Street or Mailing Address",
@@ -101,7 +92,6 @@
     "13": "Effective Date",
     "14": "Expiration Date"
   },
-
   "XTN": {
     "1": "Telephone Number",
     "2": "Telecom Use Code",
@@ -116,18 +106,399 @@
     "11": "Speed Dial Code",
     "12": "Unformatted Telephone Number"
   },
-
   "HD": {
     "1": "Namespace ID",
     "2": "Universal ID",
     "3": "Universal ID Type"
   },
-
   "DLN": {
     "1": "License Number",
     "2": "Issuing State/Province/Country",
     "3": "Expiration Date"
   },
-
-  "SI": { "1": "Sequence ID" }
+  "SI": {
+    "1": "Sequence ID"
+  },
+  "FN": {
+    "1": {
+      "name": "Surname",
+      "datatype": "ST"
+    },
+    "2": {
+      "name": "Own Surname Prefix",
+      "datatype": "ST"
+    },
+    "3": {
+      "name": "Own Surname",
+      "datatype": "ST"
+    },
+    "4": {
+      "name": "Surname Prefix From Partner/Spouse",
+      "datatype": "ST"
+    },
+    "5": {
+      "name": "Surname From Partner/Spouse",
+      "datatype": "ST"
+    }
+  },
+  "DR": {
+    "1": {
+      "name": "Range Start Date/Time",
+      "datatype": "TS"
+    },
+    "2": {
+      "name": "Range End Date/Time",
+      "datatype": "TS"
+    }
+  },
+  "EI": {
+    "1": {
+      "name": "Entity Identifier",
+      "datatype": "ST"
+    },
+    "2": {
+      "name": "Namespace ID",
+      "datatype": "IS"
+    },
+    "3": {
+      "name": "Universal ID",
+      "datatype": "ST"
+    },
+    "4": {
+      "name": "Universal ID Type",
+      "datatype": "ID"
+    }
+  },
+  "EIP": {
+    "1": {
+      "name": "Placer Assigned Identifier",
+      "datatype": "EI"
+    },
+    "2": {
+      "name": "Filler Assigned Identifier",
+      "datatype": "EI"
+    }
+  },
+  "ERL": {
+    "1": {
+      "name": "Segment ID",
+      "datatype": "ST"
+    },
+    "2": {
+      "name": "Segment Sequence",
+      "datatype": "NM"
+    },
+    "3": {
+      "name": "Field Position",
+      "datatype": "NM"
+    },
+    "4": {
+      "name": "Field Repetition",
+      "datatype": "NM"
+    },
+    "5": {
+      "name": "Component Number",
+      "datatype": "NM"
+    },
+    "6": {
+      "name": "Sub-Component Number",
+      "datatype": "NM"
+    }
+  },
+  "ELD": {
+    "1": {
+      "name": "Segment ID",
+      "datatype": "ST"
+    },
+    "2": {
+      "name": "Sequence",
+      "datatype": "NM"
+    },
+    "3": {
+      "name": "Field Position",
+      "datatype": "NM"
+    },
+    "4": {
+      "name": "Code Identifying Error",
+      "datatype": "CE"
+    }
+  },
+  "MSG": {
+    "1": {
+      "name": "Message Code",
+      "datatype": "ID"
+    },
+    "2": {
+      "name": "Trigger Event",
+      "datatype": "ID"
+    },
+    "3": {
+      "name": "Message Structure",
+      "datatype": "ID"
+    }
+  },
+  "PT": {
+    "1": {
+      "name": "Processing ID",
+      "datatype": "ID"
+    },
+    "2": {
+      "name": "Processing Mode",
+      "datatype": "ID"
+    }
+  },
+  "VID": {
+    "1": {
+      "name": "Version ID",
+      "datatype": "ID"
+    },
+    "2": {
+      "name": "Internationalization Code",
+      "datatype": "CE"
+    },
+    "3": {
+      "name": "International Version ID",
+      "datatype": "CE"
+    }
+  },
+  "PL": {
+    "1": {
+      "name": "Point of Care",
+      "datatype": "IS"
+    },
+    "2": {
+      "name": "Room",
+      "datatype": "IS"
+    },
+    "3": {
+      "name": "Bed",
+      "datatype": "IS"
+    },
+    "4": {
+      "name": "Facility",
+      "datatype": "HD"
+    },
+    "5": {
+      "name": "Location Status",
+      "datatype": "IS"
+    },
+    "6": {
+      "name": "Person Location Type",
+      "datatype": "IS"
+    },
+    "7": {
+      "name": "Building",
+      "datatype": "IS"
+    },
+    "8": {
+      "name": "Floor",
+      "datatype": "IS"
+    },
+    "9": {
+      "name": "Location Description",
+      "datatype": "ST"
+    },
+    "10": {
+      "name": "Comprehensive Location Identifier",
+      "datatype": "EI"
+    },
+    "11": {
+      "name": "Assigning Authority",
+      "datatype": "HD"
+    }
+  },
+  "XON": {
+    "1": {
+      "name": "Organization Name",
+      "datatype": "ST"
+    },
+    "2": {
+      "name": "Organization Name Type Code",
+      "datatype": "IS"
+    },
+    "3": {
+      "name": "ID Number",
+      "datatype": "NM"
+    },
+    "4": {
+      "name": "Check Digit",
+      "datatype": "NM"
+    },
+    "5": {
+      "name": "Check Digit Scheme",
+      "datatype": "ID"
+    },
+    "6": {
+      "name": "Assigning Authority",
+      "datatype": "HD"
+    },
+    "7": {
+      "name": "Identifier Type Code",
+      "datatype": "ID"
+    },
+    "8": {
+      "name": "Assigning Facility",
+      "datatype": "HD"
+    },
+    "9": {
+      "name": "Name Representation Code",
+      "datatype": "ID"
+    },
+    "10": {
+      "name": "Organization Identifier",
+      "datatype": "ST"
+    }
+  },
+  "XCN": {
+    "1": {
+      "name": "ID Number",
+      "datatype": "ST"
+    },
+    "2": {
+      "name": "Family Name",
+      "datatype": "FN"
+    },
+    "3": {
+      "name": "Given Name",
+      "datatype": "ST"
+    },
+    "4": {
+      "name": "Second and Further Given Names or Initials",
+      "datatype": "ST"
+    },
+    "5": {
+      "name": "Suffix",
+      "datatype": "ST"
+    },
+    "6": {
+      "name": "Prefix",
+      "datatype": "ST"
+    },
+    "7": {
+      "name": "Degree",
+      "datatype": "IS"
+    },
+    "8": {
+      "name": "Source Table",
+      "datatype": "IS"
+    },
+    "9": {
+      "name": "Assigning Authority",
+      "datatype": "HD"
+    },
+    "10": {
+      "name": "Name Type Code",
+      "datatype": "ID"
+    },
+    "11": {
+      "name": "Identifier Check Digit",
+      "datatype": "NM"
+    },
+    "12": {
+      "name": "Check Digit Scheme",
+      "datatype": "ID"
+    },
+    "13": {
+      "name": "Identifier Type Code",
+      "datatype": "ID"
+    },
+    "14": {
+      "name": "Assigning Facility",
+      "datatype": "HD"
+    },
+    "15": {
+      "name": "Name Representation Code",
+      "datatype": "ID"
+    },
+    "16": {
+      "name": "Name Context",
+      "datatype": "CE"
+    },
+    "17": {
+      "name": "Name Validity Range",
+      "datatype": "DR"
+    },
+    "18": {
+      "name": "Name Assembly Order",
+      "datatype": "ID"
+    },
+    "19": {
+      "name": "Effective Date",
+      "datatype": "TS"
+    },
+    "20": {
+      "name": "Expiration Date",
+      "datatype": "TS"
+    },
+    "21": {
+      "name": "Professional Suffix",
+      "datatype": "ST"
+    },
+    "22": {
+      "name": "Assigning Jurisdiction",
+      "datatype": "CWE"
+    },
+    "23": {
+      "name": "Assigning Agency or Department",
+      "datatype": "CWE"
+    },
+    "24": {
+      "name": "Security Check",
+      "datatype": "ST"
+    },
+    "25": {
+      "name": "Security Check Scheme",
+      "datatype": "ID"
+    }
+  },
+  "TQ": {
+    "1": {
+      "name": "Quantity",
+      "datatype": "ST"
+    },
+    "2": {
+      "name": "Interval",
+      "datatype": "ST"
+    },
+    "3": {
+      "name": "Duration",
+      "datatype": "ST"
+    },
+    "4": {
+      "name": "Start Date/Time",
+      "datatype": "TS"
+    },
+    "5": {
+      "name": "End Date/Time",
+      "datatype": "TS"
+    },
+    "6": {
+      "name": "Priority",
+      "datatype": "ST"
+    },
+    "7": {
+      "name": "Condition",
+      "datatype": "ST"
+    },
+    "8": {
+      "name": "Text",
+      "datatype": "ST"
+    },
+    "9": {
+      "name": "Conjunction",
+      "datatype": "ID"
+    },
+    "10": {
+      "name": "Order Sequencing",
+      "datatype": "ST"
+    },
+    "11": {
+      "name": "Occurrence Duration",
+      "datatype": "CE"
+    },
+    "12": {
+      "name": "Total Occurrences",
+      "datatype": "NM"
+    }
+  }
 }
