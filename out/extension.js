@@ -41,6 +41,40 @@ const fs = __importStar(require("fs"));
 /* =========================
  * Helpers
  * ========================= */
+function getEffIndexAtPosition(doc, pos, fnRe, wrapRe) {
+    // Try the open-call prefix first (no closing ')')
+    const open = findOpenCallPrefixAroundPosition(doc, pos, fnRe, wrapRe);
+    if (open) {
+        const { argIndex, firstArgText } = readPartialArgs(open.textUpToCursor);
+        const isWrapper = !!firstArgText && IDENT_RE.test(firstArgText);
+        return isWrapper ? argIndex - 1 : argIndex;
+    }
+    // Then try balanced (closed) call and count commas only up to the caret
+    const slice = findEnclosingCallAroundPosition(doc, pos, fnRe, wrapRe);
+    if (!slice)
+        return null;
+    const ps = slice.text.indexOf('(');
+    const pe = slice.text.lastIndexOf(')');
+    if (ps < 0 || pe <= ps)
+        return null;
+    const off = offsetInSlice(doc, slice, pos);
+    // Count commas strictly inside (...) and before the caret
+    let argIndex = 0;
+    for (let i = ps + 1; i < Math.min(off, pe); i++) {
+        if (slice.text[i] === ',')
+            argIndex++;
+    }
+    // Wrapper offset: peek first argument in the whole call
+    let wrapperOffset = 0;
+    {
+        const inner = slice.text.slice(ps + 1, pe).trim();
+        const firstComma = inner.indexOf(',');
+        const first = (firstComma === -1 ? inner : inner.slice(0, firstComma)).trim();
+        if (first && IDENT_RE.test(first))
+            wrapperOffset = 1;
+    }
+    return argIndex - wrapperOffset;
+}
 // Replace the numeric token under the cursor (contiguous digits). If none, insert at cursor.
 function findNumericTokenReplaceRange(doc, pos) {
     const line = doc.lineAt(pos.line).text;
@@ -391,12 +425,11 @@ function readPartialArgs(textUpToCursor) {
  * Activate
  * ========================= */
 function activate(context) {
-    console.log('hl7-hover activated 🚂');
     const config = vscode.workspace.getConfiguration();
     // Settings
-    const version = config.get('hl7Hover.version', 'v251');
-    const specBaseUrl = config.get('hl7Hover.specBaseUrl', 'https://hl7-definition.caristix.com/v2');
-    const fnNames = config.get('hl7Hover.fnNames', ['getValue', 'setValue', 'getValues', 'setValues']);
+    const version = config.get('hl7Helper.version', 'v251');
+    const specBaseUrl = config.get('hl7Helper.specBaseUrl', 'https://hl7-definition.caristix.com/v2');
+    const fnNames = config.get('hl7Helper.fnNames', ['getValue', 'setValue', 'getValues', 'setValues']);
     // Version → Caristix path segment
     const versionPathMap = {
         v231: 'HL7v2.3.1',
@@ -411,6 +444,23 @@ function activate(context) {
     // Dynamic matchers
     const FN_CALL_RE = buildFnCallRegex(fnNames);
     const WRAP_FN_CALL_RE = buildWrapperFnCallRegex(fnNames);
+    // --- Auto-trigger on cursor movement into HL7 slots (segment/field/component)
+    const triggerSuggestOnSelection = debounce(() => {
+        const ed = vscode.window.activeTextEditor;
+        if (!ed)
+            return;
+        const doc = ed.document;
+        const pos = ed.selection.active;
+        const lang = doc.languageId;
+        if (!['javascript', 'typescript', 'javascriptreact', 'typescriptreact'].includes(lang))
+            return;
+        const effIndex = getEffIndexAtPosition(doc, pos, FN_CALL_RE, WRAP_FN_CALL_RE);
+        if (effIndex === 0 || effIndex === 2 || effIndex === 4) {
+            void vscode.commands.executeCommand('editor.action.triggerSuggest');
+        }
+    }, 80);
+    // fire when the selection changes or editor focus changes
+    context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(() => triggerSuggestOnSelection()), vscode.window.onDidChangeActiveTextEditor(() => triggerSuggestOnSelection()));
     /* ---------- Hover Provider ---------- */
     const hoverProvider = {
         provideHover(doc, pos) {
@@ -501,13 +551,13 @@ function activate(context) {
                     const baseRange = new vscode.Range(docSlice.start, docSlice.end.translate(0, 1));
                     lenses.push(new vscode.CodeLens(baseRange, {
                         title: `${seg}${field ? `-${field}` : ''} ${fldName}${dtype ? ` (${dtype})` : ''} — Open Spec`,
-                        command: 'hl7Hover.openSegmentSpec',
+                        command: 'hl7Helper.openSegmentSpec',
                         arguments: [seg]
                     }));
                     if (dtype) {
                         lenses.push(new vscode.CodeLens(baseRange, {
                             title: `${dtype} — Open Datatype`,
-                            command: 'hl7Hover.openDatatypeSpec',
+                            command: 'hl7Helper.openDatatypeSpec',
                             arguments: [dtype]
                         }));
                     }
@@ -537,13 +587,13 @@ function activate(context) {
                     const baseRange = new vscode.Range(docSlice.start, docSlice.end.translate(0, 1));
                     lenses.push(new vscode.CodeLens(baseRange, {
                         title: `${seg}${field ? `-${field}` : ''} ${fldName}${dtype ? ` (${dtype})` : ''} — Open Spec`,
-                        command: 'hl7Hover.openSegmentSpec',
+                        command: 'hl7Helper.openSegmentSpec',
                         arguments: [seg]
                     }));
                     if (dtype) {
                         lenses.push(new vscode.CodeLens(baseRange, {
                             title: `${dtype} — Open Datatype`,
-                            command: 'hl7Hover.openDatatypeSpec',
+                            command: 'hl7Helper.openDatatypeSpec',
                             arguments: [dtype]
                         }));
                     }
@@ -557,7 +607,7 @@ function activate(context) {
         { language: 'javascriptreact' }, { language: 'typescriptreact' }
     ], new HL7CodeLensProvider()));
     /* ---------- Diagnostics (out-of-range checks) ---------- */
-    const diagCollection = vscode.languages.createDiagnosticCollection('hl7Hover');
+    const diagCollection = vscode.languages.createDiagnosticCollection('hl7Helper');
     context.subscriptions.push(diagCollection);
     function validateDoc(doc) {
         const diagnostics = [];
@@ -615,7 +665,6 @@ function activate(context) {
     /* ---------- Completion Provider (Autocomplete) ---------- */
     const completionProvider = {
         provideCompletionItems(doc, pos) {
-            console.log("Inside the completion item");
             // 1) Try tolerant open-call parsing (works mid-typing with no ')')
             const open = findOpenCallPrefixAroundPosition(doc, pos, FN_CALL_RE, WRAP_FN_CALL_RE);
             if (open) {
@@ -628,7 +677,6 @@ function activate(context) {
                 // Segment text source depends on wrapper/member:
                 // member: firstArgText; wrapper: args[1]
                 const segArgText = isWrapper ? (args[1] ?? '') : firstArgText;
-                console.log("EffIndex is " + effIndex);
                 // detect partial/full segment literal in segArgText, e.g. "P  "PI  "PID
                 let segPrefix;
                 let segFromFirstArg;
@@ -680,16 +728,19 @@ function activate(context) {
                 // If we can see the segment literal, we can suggest fields (argIndex === 2 for index-style)
                 if (segFromFirstArg && effIndex === 2) {
                     const replaceRange = findNumericTokenReplaceRange(doc, pos);
+                    const currentNum = doc.getText(replaceRange).trim();
                     const fields = segments[segFromFirstArg] ?? {};
+                    const items = [];
                     Object.entries(fields)
                         .sort(([a], [b]) => Number(a) - Number(b))
                         .forEach(([num, meta]) => {
                         const it = new vscode.CompletionItem(`${num}`, vscode.CompletionItemKind.Value);
                         it.detail = `${meta.name}${meta.datatype ? ` (${meta.datatype})` : ''}`;
                         it.insertText = num;
-                        it.filterText = num; // so typing 1 filters to 1,10,11… nicely
-                        it.sortText = '0_' + String(num).padStart(3, '0');
                         it.range = replaceRange; // <-- overwrite numeric token
+                        it.sortText = '0_' + String(num).padStart(3, '0');
+                        it.filterText = 'hl7-field';
+                        it.preselect = (currentNum === num); // optional: highlight current number
                         items.push(it);
                     });
                     return items;
@@ -724,7 +775,9 @@ function activate(context) {
                     const dtypeGuess = fieldGuess ? (segments[segFromFirstArg]?.[fieldGuess]?.datatype) : undefined;
                     if (dtypeGuess) {
                         const replaceRange = findNumericTokenReplaceRange(doc, pos);
+                        const currentNum = doc.getText(replaceRange).trim();
                         const dt = dtypes[dtypeGuess] || {};
+                        const items = [];
                         Object.entries(dt)
                             .filter(([k]) => /^\d+$/.test(k))
                             .sort(([a], [b]) => Number(a) - Number(b))
@@ -732,9 +785,10 @@ function activate(context) {
                             const it = new vscode.CompletionItem(`${num}`, vscode.CompletionItemKind.Value);
                             it.detail = String(name);
                             it.insertText = num;
-                            it.filterText = num;
-                            it.sortText = '0_' + String(num).padStart(3, '0');
                             it.range = replaceRange; // <-- overwrite numeric token
+                            it.sortText = '0_' + String(num).padStart(3, '0');
+                            it.filterText = 'hl7-comp';
+                            it.preselect = (currentNum === num);
                             items.push(it);
                         });
                         return items;
@@ -822,9 +876,7 @@ function activate(context) {
     };
     // --- Auto-trigger suggestions while typing inside the first arg (segment) or field/component slots
     const triggerSuggestIfHL7Context = debounce(() => {
-        console.log('auto complete activated 🚂');
         const ed = vscode.window.activeTextEditor;
-        console.log("Hello");
         if (!ed)
             return;
         const doc = ed.document;
@@ -841,7 +893,6 @@ function activate(context) {
         // Wrapper?
         const isWrapper = !!firstArgText && IDENT_RE.test(firstArgText);
         const effIndex = isWrapper ? argIndex - 1 : argIndex;
-        console.log("EffIndex" + effIndex);
         // Are we clearly in a place where our completions are meaningful?
         // - effIndex === 0  → segment name (inside quotes)
         // - effIndex === 2  → field
@@ -872,11 +923,11 @@ function activate(context) {
     // trigger on quotes, slash (path), dash/dot/commas/numbers, AND letters (for "PID" as you type)
     '"', "'", '/', '-', '.', ',', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'));
     /* ---------- Commands ---------- */
-    context.subscriptions.push(vscode.commands.registerCommand('hl7Hover.openSegmentSpec', (seg) => {
+    context.subscriptions.push(vscode.commands.registerCommand('hl7Helper.openSegmentSpec', (seg) => {
         const target = `${specBaseUrl}/${versionPath}/Segments/${seg}`;
         vscode.env.openExternal(vscode.Uri.parse(target));
     }));
-    context.subscriptions.push(vscode.commands.registerCommand('hl7Hover.openDatatypeSpec', (dtype) => {
+    context.subscriptions.push(vscode.commands.registerCommand('hl7Helper.openDatatypeSpec', (dtype) => {
         const target = `${specBaseUrl}/${versionPath}/DataTypes/${dtype}`;
         vscode.env.openExternal(vscode.Uri.parse(target));
     }));
