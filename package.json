@@ -1,15 +1,43 @@
 {
   "name": "hl7-helper",
-  "version": "0.0.1",
+  "displayName": "HL7 Hover & IntelliSense",
+  "description": "Hover, autocomplete, and diagnostics for HL7 v2 calls in Rhapsody/HAPI JS code.",
+  "publisher": "RichHowell",
+  "icon": "images/icon.png",
+  "repository": {
+    "url": "https://github.com/rich-howell/HL7-Helper"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Rich Howell",
+    "url": "https://richhowell.com"
+  },
+  "version": "0.0.2",
   "main": "./out/extension.js",
   "engines": {
     "vscode": "^1.90.0"
   },
+  "categories": [
+    "Other", 
+    "Programming Languages"
+  ],
+  "keywords": [
+    "hl7",
+    "healthcare",
+    "hover",
+    "autocomplete",
+    "intellisense",
+    "rhapsody",
+    "hapi"
+  ],
   "files": [
   "out",
   "data",
   "package.json",
-  "tsconfig.json"    
+  "tsconfig.json",
+  "images/icon.png",
+  "CHANGELOG.md",
+  "README.md"  
   ],
   "activationEvents": [
     "onLanguage:javascript",
