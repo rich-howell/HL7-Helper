@@ -5,18 +5,14 @@ A VS Code extension that adds **hover info**, **code lenses**, **diagnostics**, 
 ## Features
 
 - **Hover tooltips**  
-  Hover over a segment, field, or component index in calls like:  
-  ```js
-  msg.getValue("PID", 0, 3, 0, 1, 1)
-  ```
+Hover over a segment, field, or component index to get the definition of that component. Shows segment/field/component names and datatypes.
 
-→ shows segment/field/component names and datatypes.
+![alt text](images/hover-example.gif)
 
-- CodeLens shortcuts
-Links above calls to open official HL7 segment/datatype documentation.
+- **IntelliSense Suggestions**
+Auto complete suggestions as you type.
 
-- Diagnostics
-Invalid field/component numbers are squiggled with a warning.
+![alt text](images/auto-complete-example.gif)
 
 - Autocomplete
   - Segments (PID, PV1, …)
@@ -25,6 +21,21 @@ Invalid field/component numbers are squiggled with a warning.
   - Suggestions pop when typing and when moving the cursor into a slot.
   - Numeric items are sorted correctly (1, 2, 3, … not 1, 10, 11).
   - Selecting an item replaces the token you’re on.
+
+- **Replace field suggestions**
+Placing the cursor into a field that already contains a value will trigger IntelliSense and selection will replace the existing value.
+
+![alt text](images/field-replace-example.gif)
+
+- **CodeLens shortcuts**
+Links above calls to open official HL7 segment/datatype documentation.
+
+![alt text](images/link-example.gif)
+
+- **Diagnostics**
+Invalid field/component numbers are squiggled with a warning.
+
+![alt text](images/invalid-segment-example.gif)
 
 ## Usage
 
