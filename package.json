@@ -12,7 +12,7 @@
     "name": "Rich Howell",
     "url": "https://richhowell.com"
   },
-  "version": "0.0.2",
+  "version": "0.0.4",
   "main": "./out/extension.js",
   "engines": {
     "vscode": "^1.90.0"
@@ -37,7 +37,8 @@
   "tsconfig.json",
   "images/icon.png",
   "CHANGELOG.md",
-  "README.md"  
+  "README.md",
+  "images"  
   ],
   "activationEvents": [
     "onLanguage:javascript",
