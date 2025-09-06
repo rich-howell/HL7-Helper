@@ -1,0 +1,67 @@
+{
+  "name": "hl7-helper",
+  "version": "0.0.1",
+  "main": "./out/extension.js",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "files": [
+  "out",
+  "data",
+  "package.json",
+  "tsconfig.json"    
+  ],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescriptreact",
+    "onCommand:hl7Helper.openSegmentSpec",
+    "onCommand:hl7Helper.openDatatypeSpec"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "hl7Helper.openSegmentSpec",
+        "title": "Open HL7 Segment Spec"
+      },
+      {
+        "command": "hl7Helper.openDatatypeSpec",
+        "title": "Open HL7 Datatype Spec"
+      }
+    ],
+    "configuration": {
+      "title": "HL7 Helper",
+      "properties": {
+        "hl7Helper.fnNames": {
+          "type": "array",
+          "default": ["getValue", "setValue", "getValues", "setValues"],
+          "items": { "type": "string" },
+          "description": "Rhapsody/HAPI functions to detect for HL7 hovers & CodeLens."
+        },
+        "hl7Helper.version": {
+          "type": "string",
+          "default": "v251",
+          "enum": ["v231", "v240", "v251", "v27"],
+          "description": "HL7 version used for hover metadata"
+        },
+        "hl7Helper.specBaseUrl": {
+          "type": "string",
+          "default": "https://hl7-definition.caristix.com/v2",
+          "description": "Base URL for opening HL7 specs (segment & datatype pages)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tslib": "^2.6.0",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.90.0"
+  }
+}

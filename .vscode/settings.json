@@ -1,0 +1,9 @@
+{
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.quickSuggestions": {
+    "strings": true,
+    "other": true,
+    "comments": false
+  },
+  "editor.quickSuggestionsDelay": 0
+}

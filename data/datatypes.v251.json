@@ -1,0 +1,133 @@
+{
+  "CX": {
+    "1": "ID Number",
+    "2": "Check Digit",
+    "3": "Check Digit Scheme",
+    "4": "Assigning Authority",
+    "4.1": "Assigning Authority.Namespace ID",
+    "4.2": "Assigning Authority.Universal ID",
+    "4.3": "Assigning Authority.Universal ID Type",
+    "5": "Identifier Type Code",
+    "6": "Assigning Facility",
+    "6.1": "Assigning Facility.Namespace ID",
+    "6.2": "Assigning Facility.Universal ID",
+    "6.3": "Assigning Facility.Universal ID Type",
+    "7": "Effective Date",
+    "8": "Expiration Date",
+    "9": "Assigning Jurisdiction",
+    "10": "Assigning Agency or Department"
+  },
+
+  "XPN": {
+    "1": "Family Name",
+    "1.1": "Family Name.Surname",
+    "1.2": "Family Name.Own Surname Prefix",
+    "1.3": "Family Name.Own Surname",
+    "1.4": "Family Name.Surname Prefix From Partner",
+    "1.5": "Family Name.Surname From Partner",
+    "2": "Given Name",
+    "3": "Second and Further Given Names or Initials",
+    "4": "Suffix (e.g., JR or III)",
+    "5": "Prefix (e.g., DR)",
+    "6": "Degree (e.g., MD)",
+    "7": "Name Type Code",
+    "8": "Name Representation Code",
+    "9": "Name Context",
+    "10": "Name Validity Range",
+    "11": "Name Assembly Order",
+    "12": "Effective Date",
+    "13": "Expiration Date",
+    "14": "Professional Suffix"
+  },
+
+  "TS": {
+    "1": "Time",
+    "2": "Degree of Precision"
+  },
+
+  "IS": {
+    "1": "Coded Value"
+  },
+
+  "ID": {
+    "1": "Flag (Y/N/…)"
+  },
+
+  "ST": {
+    "1": "String Data"
+  },
+
+  "NM": {
+    "1": "Numeric Value"
+  },
+
+  "CE": {
+    "1": "Identifier",
+    "2": "Text",
+    "3": "Name of Coding System",
+    "4": "Alternate Identifier",
+    "5": "Alternate Text",
+    "6": "Name of Alternate Coding System"
+  },
+
+  "CWE": {
+    "1": "Identifier",
+    "2": "Text",
+    "3": "Name of Coding System",
+    "4": "Alternate Identifier",
+    "5": "Alternate Text",
+    "6": "Name of Alternate Coding System",
+    "7": "Coding System Version ID",
+    "8": "Alternate Coding System Version ID",
+    "9": "Original Text"
+  },
+
+  "XAD": {
+    "1": "Street Address",
+    "1.1": "Street Address.Street or Mailing Address",
+    "1.2": "Street Address.Street Name",
+    "1.3": "Street Address.Dwelling Number",
+    "2": "Other Designation",
+    "3": "City",
+    "4": "State or Province",
+    "5": "Zip or Postal Code",
+    "6": "Country",
+    "7": "Address Type",
+    "8": "Other Geographic Designation",
+    "9": "County/Parish Code",
+    "10": "Census Tract",
+    "11": "Address Representation Code",
+    "12": "Address Validity Range",
+    "13": "Effective Date",
+    "14": "Expiration Date"
+  },
+
+  "XTN": {
+    "1": "Telephone Number",
+    "2": "Telecom Use Code",
+    "3": "Telecom Equipment Type",
+    "4": "Email Address",
+    "5": "Country Code",
+    "6": "Area/City Code",
+    "7": "Local Number",
+    "8": "Extension",
+    "9": "Any Text",
+    "10": "Extension Prefix",
+    "11": "Speed Dial Code",
+    "12": "Unformatted Telephone Number"
+  },
+
+  "HD": {
+    "1": "Namespace ID",
+    "2": "Universal ID",
+    "3": "Universal ID Type"
+  },
+
+  "DLN": {
+    "1": "License Number",
+    "2": "Issuing State/Province/Country",
+    "3": "Expiration Date"
+  },
+
+  "SI": { "1": "Sequence ID" }
+}
