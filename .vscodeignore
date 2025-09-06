@@ -1,0 +1,7 @@
+.gitignore
+.github/**
+src/**
+node_modules/**/test/**
+node_modules/**/docs/**
+**/*.map
+tests/**
