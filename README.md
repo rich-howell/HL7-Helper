@@ -7,12 +7,12 @@ A VS Code extension that adds **hover info**, **code lenses**, **diagnostics**, 
 - **Hover tooltips**  
 Hover over a segment, field, or component index to get the definition of that component. Shows segment/field/component names and datatypes.
 
-![alt text](images/hover-example.gif)
+![Hover Example](https://github.com/rich-howell/HL7-Helper/raw/main/images/hover-example.gif)
 
 - **IntelliSense Suggestions**
 Auto complete suggestions as you type.
 
-![alt text](images/auto-complete-example.gif)
+![Auto Complete](https://github.com/rich-howell/HL7-Helper/raw/main/images/auto-complete-example.gif)
 
 - Autocomplete
   - Segments (PID, PV1, …)
@@ -25,17 +25,17 @@ Auto complete suggestions as you type.
 - **Replace field suggestions**
 Placing the cursor into a field that already contains a value will trigger IntelliSense and selection will replace the existing value.
 
-![alt text](images/field-replace-example.gif)
+![Field Replacement](https://github.com/rich-howell/HL7-Helper/raw/main/images/field-replace-example.gif)
 
 - **CodeLens shortcuts**
 Links above calls to open official HL7 segment/datatype documentation.
 
-![alt text](images/link-example.gif)
+![Link Example](https://github.com/rich-howell/HL7-Helper/raw/main/images/link-example.gif)
 
 - **Diagnostics**
 Invalid field/component numbers are squiggled with a warning.
 
-![alt text](images/invalid-segment-example.gif)
+![Invalid Segment](https://github.com/rich-howell/HL7-Helper/raw/main/images/invalid-segment-example.gif)
 
 ## Usage
 
