@@ -12,7 +12,7 @@
     "name": "Rich Howell",
     "url": "https://richhowell.com"
   },
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "./out/extension.js",
   "engines": {
     "vscode": "^1.90.0"
