@@ -457,7 +457,8 @@ export function activate(context: vscode.ExtensionContext) {
   // Settings
   const version = config.get<string>('hl7Helper.version', 'v251');
   const specBaseUrl = config.get<string>('hl7Helper.specBaseUrl', 'https://hl7-definition.caristix.com/v2');
-  const fnNames = config.get<string[]>('hl7Helper.fnNames', ['getValue', 'setValue', 'getValues', 'setValues']);
+  const cfgNames = config.get<string[]>('hl7Helper.fnNames', ['getValue', 'setValue', 'getValues', 'setValues']);
+  const fnNames = Array.from(new Set([...cfgNames, 'segmentExists']));
 
   // Version → Caristix path segment
   const versionPathMap: Record<string, string> = {
@@ -506,6 +507,65 @@ context.subscriptions.push(
       if (!slice) return;
 
       const callText = slice.text;
+      
+      // --- Minimal hover for calls shaped like ("SEG", idx) ---
+      // Works for member or wrapper. Returns only if the shape matches; otherwise
+      // we fall through to your original hover logic.
+      {
+        const openParen = callText.indexOf('(');
+        const closeParen = callText.lastIndexOf(')');
+        if (openParen >= 0 && closeParen > openParen) {
+          const cursorOffset = offsetInSlice(doc, slice, pos);
+
+          // 1) Parse first arg: quoted segment literal (support A-Z0-9 e.g. "AL1", "Z99")
+          let p = openParen + 1;
+          while (p < closeParen && /\s/.test(callText[p])) p++;
+          const quote = callText[p];
+          if (quote === '"' || quote === '\'' || quote === '`') {
+            const segStart = p;
+            const segEnd = callText.indexOf(quote, segStart + 1);
+            if (segEnd > segStart) {
+              const segLit = callText.slice(segStart, segEnd + 1);
+              const segOk = /^["'`][A-Z0-9]{3}["'`]$/.test(segLit);
+
+              // 2) Find comma
+              p = segEnd + 1;
+              while (p < closeParen && /\s/.test(callText[p])) p++;
+              if (p < closeParen && callText[p] === ',') p++;
+              while (p < closeParen && /\s/.test(callText[p])) p++;
+
+              // 3) Parse second arg: integer index
+              const idxStart = p;
+              while (p < closeParen && /[-0-9]/.test(callText[p])) p++;
+              const idxEnd = p;
+              const idxLit = callText.slice(idxStart, idxEnd);
+              const idxOk = /^-?\d+$/.test(idxLit);
+
+              if (segOk && idxOk) {
+                const segCode = segLit.slice(1, -1).toUpperCase();
+
+                // Hover over the quoted segment literal
+                if (cursorOffset >= segStart && cursorOffset <= segEnd + 1) {
+                  const md = new vscode.MarkdownString(); md.isTrusted = true;
+                  md.appendMarkdown(`**${segCode}** segment`);
+                  const specUrl = `${specBaseUrl}/${versionPath}/Segments/${segCode}`;
+                  md.appendMarkdown(`\n\n[Open ${segCode} spec](${specUrl})`);
+                  return new vscode.Hover(md);
+                }
+
+                // Hover over the index number
+                if (cursorOffset >= idxStart && cursorOffset <= idxEnd) {
+                  const md = new vscode.MarkdownString(); md.isTrusted = true;
+                  md.appendMarkdown(`**${segCode}[${idxLit}]** segment occurrence`);
+                  return new vscode.Hover(md);
+                }
+              }
+            }
+          }
+        }
+      }
+      // --- end minimal ("SEG", idx) hover ---
+
       const parsed = parseCallSignature(callText);
       if (!parsed) return;
 

@@ -5,6 +5,19 @@ This project follows [Keep a Changelog](https://keepachangelog.com/) style.
 
 ---
 
+## [0.0.6] - 2025-09-10
+### Added
+- Hover support for short-form checks like `segmentExists("AL1", 0)`.  
+  - Hovering the quoted segment (e.g., `"AL1"`) shows the segment name with a spec link.  
+  - Hovering the index (e.g., `0`) shows the segment occurrence (e.g., `AL1[0]`).
+- Recognition of alphanumeric 3-character segment IDs (e.g., `AL1`, `Z99`) in hovers.
+
+### Changed
+- No changes to existing `getValue(...)`/path hover or CodeLens behaviour.
+
+### Fixed
+- Improved tolerance around chained string operations (e.g., `.substring(...)`, `.slice(...)`) when hovering HL7 calls, reducing missed hovers in complex expressions.
+
 ## [0.0.2] – 2025-09-06
 ### Added
 - Autocomplete now triggers when **moving the cursor into** a segment/field/component slot, not just when typing.
