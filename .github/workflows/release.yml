@@ -93,8 +93,8 @@ jobs:
           VERSION="${{ steps.version.outputs.version }}"
 
           if [ -f CHANGELOG.md ]; then
-            BODY=$(awk -v ver="## ${VERSION}" '
-              $0 == ver {flag=1; print; next;}
+            BODY=$(awk -v ver="$VERSION" '
+              $0 ~ ("^## \\[" ver "\\]") || $0 == ("## " ver) {flag=1; print; next;}
               /^## / && flag {exit}
               flag {print}
             ' CHANGELOG.md)
