@@ -1,0 +1,113 @@
+name: Build and Release VS Code Extension
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'version.txt'
+      - 'CHANGELOG.md'
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  RELEASE_NAME: HL7 Hover & IntelliSense
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read version from version.txt
+        id: version
+        run: |
+          if [ ! -f version.txt ]; then
+            echo "version.txt not found"
+            exit 1
+          fi
+
+          VERSION=$(cat version.txt | tr -d '[:space:]')
+
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Version '$VERSION' is not valid SemVer (x.y.z)"
+            exit 1
+          fi
+
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Check if release already exists
+        id: check_release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "${{ steps.version.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Exit if release already exists
+        if: steps.check_release.outputs.exists == 'true'
+        run: |
+          echo "Release ${{ steps.version.outputs.tag }} already exists. Exiting."
+          exit 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Sync package.json version
+        run: npm version --no-git-tag-version ${{ steps.version.outputs.version }}
+
+      - name: Compile
+        run: npm run compile
+
+      - name: Package VSIX
+        run: |
+          mkdir -p dist
+          npx --yes @vscode/vsce package --out dist/
+
+      - name: Read changelog for this version
+        id: notes
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+
+          if [ -f CHANGELOG.md ]; then
+            BODY=$(awk -v ver="## ${VERSION}" '
+              $0 == ver {flag=1; print; next;}
+              /^## / && flag {exit}
+              flag {print}
+            ' CHANGELOG.md)
+
+            if [ -z "$BODY" ]; then
+              echo "No changelog entry found for version ${VERSION}."
+              exit 1
+            fi
+          else
+            BODY="CHANGELOG.md not found."
+          fi
+
+          echo "body<<EOF" >> $GITHUB_OUTPUT
+          echo "$BODY" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ env.RELEASE_NAME }} ${{ steps.version.outputs.version }}
+          body: ${{ steps.notes.outputs.body }}
+          files: dist/*.vsix
