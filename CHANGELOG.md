@@ -5,6 +5,10 @@ This project follows [Keep a Changelog](https://keepachangelog.com/) style.
 
 ---
 
+## [0.0.7] - 2025-12-29
+### Maintenance
+- Internal maintenance and release workflow.
+
 ## [0.0.6] - 2025-09-10
 ### Added
 - Hover support for short-form checks like `segmentExists("AL1", 0)`.  
