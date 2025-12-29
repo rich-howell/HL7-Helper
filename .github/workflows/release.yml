@@ -70,7 +70,14 @@ jobs:
         run: npm ci
 
       - name: Sync package.json version
-        run: npm version --no-git-tag-version ${{ steps.version.outputs.version }}
+        run: |
+          TARGET_VERSION="${{ steps.version.outputs.version }}"
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          if [ "$CURRENT_VERSION" != "$TARGET_VERSION" ]; then
+            npm version --no-git-tag-version "$TARGET_VERSION"
+          else
+            echo "package.json already at version $TARGET_VERSION"
+          fi
 
       - name: Compile
         run: npm run compile
