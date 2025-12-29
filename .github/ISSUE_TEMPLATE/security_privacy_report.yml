@@ -1,0 +1,57 @@
+name: "🔐 Security or Privacy Report"
+description: Report concerns related to data handling, permissions, or privacy risks
+labels: ["security", "privacy", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to help keep things safe!  
+        This form is for privacy concerns or security-related behaviours that *aren't* necessarily active exploits.  
+        If this is an actual vulnerability, please use the "Security Vulnerability" form instead.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary of Concern
+      description: A short explanation of what you’ve found.
+      placeholder: "The app requests location access but doesn’t explain why."
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Where Did You Notice This?
+      description: Page, feature, endpoint, screen, or code area
+      placeholder: "Settings > Privacy, /account route, Profile page..."
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or Screenshots
+      description: Include screenshots/logs if possible. Please remove any sensitive personal data.
+      placeholder: "Attach images, redact as needed."
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Estimated Severity
+      options:
+        - Low — Minor concern
+        - Medium — Could mislead users or expose minor information
+        - High — Noticeable privacy or handling issue
+        - Critical — 🚨 Potential exposure of sensitive data
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Suggested Fix or Expected Behaviour
+      placeholder: "Permission request should clarify purpose..."
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      placeholder: "Anything else we should check?"
