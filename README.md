@@ -75,6 +75,10 @@ Package:
 npx vsce package
 ```
 
+Packaging notes:
+- VSCE packaging is driven by the `files` whitelist in `package.json`.
+- Do not add a `.vscodeignore` file; VSCE does not allow both strategies.
+
 ## Known quirks
 
 - Path-style calls (`"/PID(0)-3(0)-1(1)"`) have hover support, completions are basic.
