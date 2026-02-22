@@ -1,6 +1,6 @@
 name: "💡 Feature Request"
 description: "Suggest a new idea or enhancement"
-labels: ["enhancement", "needs-triage"]
+labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
@@ -34,4 +34,4 @@ body:
     id: additional
     attributes:
       label: "Additional Context"
-      placeholder: "Any screenshots, mock-ups, or references?"
+      placeholder: "Any screenshots, mockups, or references?"

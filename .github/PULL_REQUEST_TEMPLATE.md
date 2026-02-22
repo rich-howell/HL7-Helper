@@ -1,5 +1,9 @@
 # 🚀 Pull Request
 
+Thanks for contributing! Before submitting, please confirm the following checklist ✅
+
+---
+
 ## Summary
 <!-- A brief summary of what this PR does -->
 
@@ -11,16 +15,17 @@
 - [ ] New feature
 - [ ] Documentation update
 - [ ] Refactor / code cleanup
-- [ ] Chore
 
 ## Description
-<!-- What did you change and why? -->
-
-## Screenshots
-<!-- If there are any screenshots available to support your change, please include them here -->
+<!-- What did you change and why? Include any screenshots if relevant -->
 
 ## Testing
 <!-- Describe how you tested the change -->
 - [ ] I have tested this locally
 - [ ] I have added tests (if applicable)
 - [ ] I have updated documentation (if applicable)
+
+---
+
+🧠 **Notes for Reviewers**
+Anything weird, clever, or worth double-checking?
