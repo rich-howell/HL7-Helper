@@ -633,6 +633,54 @@
     "19": {
       "name": "Action By",
       "datatype": "XCN"
+    },
+    "20": {
+      "name": "Advanced Beneficiary Notice Code",
+      "datatype": "CE"
+    },
+    "21": {
+      "name": "Ordering Facility Name",
+      "datatype": "XON"
+    },
+    "22": {
+      "name": "Ordering Facility Name",
+      "datatype": "XAD"
+    },
+    "23": {
+      "name": "Ordering Facility Phone Number",
+      "datatype": "XTN"
+    },
+    "24": {
+      "name": "Ordering Provider Address",
+      "datatype": "XAD"
+    },
+    "25": {
+      "name": "Order Status Modifier",
+      "datatype": "CWE"
+    },
+    "26": {
+      "name": "Advanced Beneficiary Notice Override Reason",
+      "datatype": "CWE"
+    },
+    "27": {
+      "name": "Filler's Expected Availability Date/Time",
+      "datatype": "TS"
+    },
+    "28": {
+      "name": "Confidentiality Code",
+      "datatype": "CWE"
+    },
+    "29": {
+      "name": "Order Type",
+      "datatype": "CWE"
+    },
+    "30": {
+      "name": "Enterer Authorization Mode",
+      "datatype": "CNE"
+    },
+    "31": {
+      "name": "Parent Universal Service Identifier",
+      "datatype": "CWE"
     }
   },
   "OBR": {
